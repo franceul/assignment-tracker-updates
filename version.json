@@ -1,0 +1,12 @@
+
+{
+  "latestVersion": "2.1",
+  "releaseNotes": [
+    "Added support for checking app updates.",
+    "Added a manual Check for Updates button.",
+    "Prepared the app for EAS Update delivery."
+  ],
+  "apkUrl": "https://github.com/franceul/assignment-tracker-updates/releases/download/v2.1/AssignmentTracker-v2.1.apk",
+  "websiteUrl": "https://franceul.github.io/assignment-tracker-updates/",
+  "mandatory": false
+}
