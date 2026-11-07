@@ -874,6 +874,30 @@
       </div>
     </section>
 
+    
+<!-- DOWNLOAD STATISTICS -->
+    <section id="statistics">
+      <div class="section-heading">
+        <span class="section-kicker">App Statistics</span>
+        <h2>Our growing community.</h2>
+        <p>See how many times Assignment Tracker has been downloaded.</p>
+      </div>
+
+      <div class="card" style="text-align:center;max-width:520px;margin:auto">
+        <div style="font-size:34px;margin-bottom:8px">📥</div>
+
+        <div class="label">GitHub APK Downloads</div>
+
+        <div class="version" id="download-count"
+             aria-live="polite">—</div>
+
+        <p class="muted" id="download-count-note">
+          Loading download statistics...
+        </p>
+      </div>
+    </section>
+
+      
     <section id="guide">
       <div class="section-heading">
         <span class="section-kicker">Simple & Easy</span>
@@ -1037,6 +1061,48 @@
     }
 
     loadLatestRelease();
+    
+    async function loadDownloadStatistics() {
+      const countElement = document.getElementById("download-count");
+      const noteElement = document.getElementById("download-count-note");
+
+      try {
+        const response = await fetch(
+          "https://api.github.com/repos/franceul/assignment-tracker-updates/releases?per_page=100"
+        );
+
+        if (!response.ok) {
+          throw new Error("GitHub API error: " + response.status);
+        }
+
+        const releases = await response.json();
+
+        let totalDownloads = 0;
+
+        releases.forEach(function(release) {
+          (release.assets || []).forEach(function(asset) {
+            if (asset.name.toLowerCase().endsWith(".apk")) {
+              totalDownloads += asset.download_count || 0;
+            }
+          });
+        });
+
+        countElement.textContent =
+          totalDownloads.toLocaleString();
+
+        noteElement.textContent =
+          "Total APK downloads across published GitHub releases.";
+      } catch (error) {
+        console.error("Download statistics unavailable:", error);
+
+        countElement.textContent = "—";
+        noteElement.textContent =
+          "Download statistics are temporarily unavailable.";
+      }
+    }
+
+    loadDownloadStatistics();
+
   </script>
 
 </body>
